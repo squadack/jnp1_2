@@ -44,12 +44,15 @@ void strdeque_delete(unsigned long id)
 size_t strdeque_size(unsigned long id)
 {
 	DBG("strdeque_size(" << id << ")");
+	//deque_map.count(id) sprawdza czy istnieje kolejka o takim id
+	//trzeba jeszcze sprewdzić ilość elementów (jeśli kolejka istnieje)
 	int res = deque_map.count(id);
 	if(res > 0){
 	  DBG("strdeque_size: deque of the key " << id << "have " << res << "elements");
 	  return res;
 	} else {
 	  DBG("strdeque_size: deque of the key " << id << "have no elements");
+	  return 0;
 	}
 }
 
