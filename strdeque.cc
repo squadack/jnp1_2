@@ -18,9 +18,11 @@ static unsigned long counter = 0;
 
 unsigned long strdeque_new()
 {
+	DBG("strdeque_new");
 	int res = counter;
 	strdeq deq;
 	deque_map.insert(make_pair(counter++, deq));
+	DBG("strdeque_new: deque " << res << " created");
 	return res;
 }
 
