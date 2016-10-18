@@ -1,8 +1,11 @@
 #ifdef NDEBUG
 	#define DBG(x)
 #else
-	#define DBG(x) x
+	#define DBG(x) std::cerr << x << std::endl;
 #endif
+
+//przyklad
+//DBG("cos")
 
 #include <iostream>
 #include <deque>
@@ -12,8 +15,6 @@ typedef std::deque<std::string>> strdeq;
 
 static std::map<unsigned long, strdeq> deque_map;
 static unsigned long counter = 0;
-
-//DBG(std::cerr << "cos" << std::endl;)
 
 unsigned long strdeque_new()
 {
