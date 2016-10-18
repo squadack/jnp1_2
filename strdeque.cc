@@ -20,7 +20,7 @@ unsigned long strdeque_new()
 {
 	int res = counter;
 	strdeq deq;
-	deque_map.insert(make_pair(counter++, deq));
+	deque_map.emplace(counter++, deq);
 	return res;
 }
 
