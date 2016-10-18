@@ -8,10 +8,11 @@
 //DBG("cos")
 
 #include <iostream>
+#include <map>
 #include <deque>
 #include <cassert>
 
-typedef std::deque<std::string>> strdeq;
+typedef std::deque<std::string> strdeq;
 
 
 static std::map<unsigned long, strdeq> deque_map;
@@ -81,7 +82,6 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 void strdeque_clear(unsigned long id)
 {
 	DBG("strdeque_clear(" << id << ")");
-	assert(pos >= 0);
 	
 }
 
