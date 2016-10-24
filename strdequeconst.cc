@@ -2,15 +2,15 @@
 #include "strdequeconst.h"
 
 #ifdef NDEBUG
-	#define DBG(x)
+	const bool debug = false;
 #else
-	#define DBG(x) std::cerr << x << std::endl;
+	const bool debug = true;
 #endif
-
 
 unsigned long emptystrdeque()
 {
-	DBG("emptystrdeque()");
+	if (debug)
+		std::cerr << "emptystrdeque()" << std::endl;
 	return CONST_DEQUE;
 }
 

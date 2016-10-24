@@ -1,11 +1,8 @@
 #ifdef NDEBUG
-	#define DBG(x)
+	const bool debug = false;
 #else
-	#define DBG(x) std::cerr << x << std::endl;
+	const bool debug = true;
 #endif
-
-//przyklad
-//DBG("cos")
 
 #include <iostream>
 #include <map>
@@ -17,6 +14,7 @@
 #define ID(x) (x == CONST_DEQUE ? "the Empty Deque" : std::to_string(x).c_str())
 
 namespace {
+
 	typedef std::deque<std::string> strdeq;
 
 	std::map<unsigned long, strdeq>& deque_map()
@@ -29,48 +27,54 @@ namespace {
 unsigned long strdeque_new()
 {
 	static unsigned long counter = 1;
-	DBG("strdeque_new");
+	if (debug)
+		std::cerr << "strdeque_new" << std::endl;
 	int res = counter;
 	assert(counter != 0);
 	strdeq deq;
 	deque_map().emplace(counter++, deq);
-	DBG("strdeque_new: deque " << res << " created");
+	if (debug)
+		std::cerr << "strdeque_new: deque " << res << " created" << std::endl;
 	return res;
 }
 
 void strdeque_delete(unsigned long id)
 {
-	DBG("strdeque_delete(" << ID(id) << ")");
+	if (debug)
+		std::cerr << "strdeque_delete(" << ID(id) << ")" << std::endl;
 	if (deque_map().count(id) > 0) {
 		deque_map().erase(id);
-		DBG("strdeque_delete: deque of the key " << id << " deleted");
-	} else {
+		if (debug)
+			std::cerr << "strdeque_delete: deque of the key " << id << " deleted" << std::endl;
+	} else if (debug) {
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_delete: attempt to remove the Empty Deque");
+			std::cerr << "strdeque_delete: attempt to remove the Empty Deque" << std::endl;
 		}
 		else	
 		{
-			DBG("strdeque_delete: deque of the key " << id << " not found");
+			std::cerr << "strdeque_delete: deque of the key " << id << " not found" << std::endl;
 		}
 	}
 }
 
 size_t strdeque_size(unsigned long id)
 {
-	DBG("strdeque_size(" << ID(id) << ")");
+	if (debug)
+		std::cerr << "strdeque_size(" << ID(id) << ")" << std::endl;
 	int res = 0;
 	if (deque_map().count(id) > 0) {
 		res = deque_map()[id].size();
-		DBG("strdeque_size: deque of the key " << id << "has " << res << " elements");
-	} else {
+		if (debug)
+			std::cerr << "strdeque_size: deque of the key " << id << "has " << res << " elements" << std::endl;
+	} else if (debug) {
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_size: deque of the key the Empty Deque has 0 elements");
+			std::cerr << "strdeque_size: deque of the key the Empty Deque has 0 elements" << std::endl;
 		}
 		else
 		{
-			DBG("strdeque_size: deque of the key " << id << " does not exist");
+			std::cerr << "strdeque_size: deque of the key " << id << " does not exist" << std::endl;
 		}
 	}
 	return res;
@@ -78,7 +82,15 @@ size_t strdeque_size(unsigned long id)
 
 void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 {
-	DBG("strdeque_insert_at(" << ID(id) << ", " << pos << ", \"" << (value == NULL ? "NULL" : value) << "\")"); //BUG cudzysłow przy NULL
+	if (debug)
+	{
+		std::cerr << "strdeque_insert_at(" << ID(id) << ", " << pos << ", ";
+		if (value == NULL)
+			 std::cerr << "NULL";
+		else
+			std::cerr << "\"" << value << "\"";
+		std::cerr << ")" << std::endl;
+	}
 	assert(pos >= 0); //TODO zmienic na ignorowanie
 	
 	if (deque_map().count(id) > 0 && value != NULL) {
@@ -89,65 +101,70 @@ void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 		} else {
 			deque_map()[id].insert(deque_map()[id].begin() + pos, str);
 		}
-		DBG("strdeque_insert_at: element " << str << " inserted");
-	} else {
+		if (debug)
+			std::cerr << "strdeque_insert_at: element " << str << " inserted" << std::endl;
+	} else if (debug) {
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_insert_at: attempt to insert into the Empty Deque");
+			std::cerr << "strdeque_insert_at: attempt to insert into the Empty Deque" << std::endl;
 		}
 		else if (value == NULL)
 		{
-			DBG("strdeque_insert_at: attempt to insert NULL into a deque");
+			std::cerr << "strdeque_insert_at: attempt to insert NULL into a deque" << std::endl;
 		}
 		else
 		{
-			DBG("strdeque_insert_at: deque of the key: " << id << " does not exist");
+			std::cerr << "strdeque_insert_at: deque of the key: " << id << " does not exist" << std::endl;
 		}
 	}
 }
 
 void strdeque_remove_at(unsigned long id, size_t pos)
 {
-	DBG("strdeque_remove_at(" << ID(id) << ", " << pos << ")");
+	if (debug)
+		std::cerr << "strdeque_remove_at(" << ID(id) << ", " << pos << ")" << std::endl;
 	assert(pos >= 0);//TODO zmienic na ignorowanie
 	if (deque_map().count(id) > 0) {
 		if (deque_map()[id].size() > pos) {
 			deque_map()[id].erase(deque_map()[id].begin() + pos);
-			DBG("strdeque_remove_at: remove at deque of the key " << id << " element in position " << pos);
+			if (debug)
+				std::cerr << "strdeque_remove_at: remove at deque of the key " << id << " element in position " << pos << std::endl;
 		}
 	}
-	else 
+	else if (debug)
 	{
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_remove_at: attempt to remove from the Empty Deque");
+			std::cerr << "strdeque_remove_at: attempt to remove from the Empty Deque" << std::endl;
 		}
 		else //id nie istnieje
 		{
-			DBG("strdeque_remove_at: deque of the key: " << id << " does not exist");
+			std::cerr << "strdeque_remove_at: deque of the key: " << id << " does not exist" << std::endl;
 		}
 	}
 }
 
 const char* strdeque_get_at(unsigned long id, size_t pos)
 {
-	DBG("strdeque_get_at(" << ID(id) << ", " << pos << ")");
+	if (debug)
+		std::cerr << "strdeque_get_at(" << ID(id) << ", " << pos << ")" << std::endl;
 	assert(pos >= 0);//TODO zmienic na ignorowanie
 	if (deque_map().count(id) > 0) {
 		if (deque_map()[id].size() > pos) {
-			DBG("strdeque_get_at: return element from deque of the key " << id << " from position " << pos);
+			if (debug)
+				std::cerr << "strdeque_get_at: return element from deque of the key " << id << " from position " << pos << std::endl;
 			return deque_map()[id].at(pos).c_str();
 		}
 	}
-	else
+	else if (debug)
 	{
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_get_at: the Empty Deque does not contain an element at " << pos);
+			std::cerr << "strdeque_get_at: the Empty Deque does not contain an element at " << pos << std::endl;
 		}
 		else // id nie istnieje
 		{
-			DBG("strdeque_get_at: deque of the key: " << id << " does not exist");
+			std::cerr << "strdeque_get_at: deque of the key: " << id << " does not exist" << std::endl;
 		}
 	}
 	return NULL;
@@ -155,27 +172,30 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 
 void strdeque_clear(unsigned long id)
 {
-	DBG("strdeque_clear(" << ID(id) << ")");
+	if (debug)
+		std::cerr << "strdeque_clear(" << ID(id) << ")" << std::endl;
 	if (deque_map().count(id) > 0) {
 		deque_map()[id].clear();
-		DBG("strdeque_clear: remove all elements from deque of the key " << id);
+		if (debug)
+			std::cerr << "strdeque_clear: remove all elements from deque of the key " << id << std::endl;
 	}
-	else
+	else if (debug)
 	{
 		if (id == CONST_DEQUE)
 		{
-			DBG("strdeque_clear: attempt to clear the Empty Deque");
+			std::cerr << "strdeque_clear: attempt to clear the Empty Deque" << std::endl;
 		}
 		else
 		{
-			DBG("strdeque_clear: deque of the key: " << id << " does not exist");
+			std::cerr << "strdeque_clear: deque of the key: " << id << " does not exist" << std::endl;
 		}
 	}
 }
 
 int strdeque_comp(unsigned long id1, unsigned long id2)
 {
-	DBG("strdeque_comp(" << ID(id1) << ", " << ID(id2) << ")");
+	if (debug)
+		std::cerr << "strdeque_comp(" << ID(id1) << ", " << ID(id2) << ")" << std::endl;
 	strdeq tmp1;
 	strdeq tmp2;
 	//Jeżeli kolejka dwustronna o którymś z identyfikatorów nie istnieje, to jest
@@ -188,15 +208,18 @@ int strdeque_comp(unsigned long id1, unsigned long id2)
 		tmp2 = deque_map()[id2];
 	}
 	if (tmp1 < tmp2) {
-		DBG("strdeque_comp: deque of the key: " << ID(id1) << " < deque of the key: " << ID(id2));
+		if (debug)
+			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " < deque of the key: " << ID(id2) << std::endl;
 		return -1;
 	}
 	else if (tmp1 == tmp2) {
-		DBG("strdeque_comp: deque of the key: " << ID(id1) << " = deque of the key: " << ID(id2));
+		if (debug)
+			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " = deque of the key: " << ID(id2) << std::endl;
 		return 0;
 	}
 	else { //tmp1 > tmp2
-		DBG("strdeque_comp: deque of the key: " << ID(id1) << " > deque of the key: " << ID(id2));
+		if (debug)
+			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " > deque of the key: " << ID(id2) << std::endl;
 		return 1;
 	}
 }
