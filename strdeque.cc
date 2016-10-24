@@ -11,15 +11,13 @@
 #include <map>
 #include <deque>
 #include <cassert>
+#include "strdequeconst.h"
 
 typedef std::deque<std::string> strdeq;
 
 
 static std::map<unsigned long, strdeq> deque_map;
 static unsigned long counter = 1;
-
-
-static const unsigned long CONST_DEQUE = 0;
 
 unsigned long strdeque_new()
 {
