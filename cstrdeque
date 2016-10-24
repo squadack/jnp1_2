@@ -1,0 +1,9 @@
+#ifndef __CSTRDEQUE__
+#define __CSTRDEQUE__
+
+namespace jnp1
+{
+	#include "strdeque.h"
+}
+
+#endif

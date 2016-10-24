@@ -1,0 +1,9 @@
+#ifndef __CSTRDEQUECONST__
+#define __CSTRDEQUECONST__
+
+namespace jnp1
+{
+	#include "cstrdequeconst.h"
+}
+
+#endif
