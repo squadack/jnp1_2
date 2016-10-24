@@ -59,11 +59,9 @@ void strdeque_delete(unsigned long id)
 size_t strdeque_size(unsigned long id)
 {
 	DBG("strdeque_size(" << ID(id) << ")");
-	strdeq tmp;
 	int res = 0;
 	if (deque_map().count(id) > 0) {
-		tmp = deque_map()[id];
-		res = tmp.size();
+		res = deque_map()[id].size();
 		DBG("strdeque_size: deque of the key " << id << "has " << res << " elements");
 	} else {
 		if (id == CONST_DEQUE)
@@ -85,14 +83,12 @@ void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 	
 	if (deque_map().count(id) > 0 && value != NULL) {
 		std::string str(value);
-		strdeq tmp = deque_map()[id]; //TODO
-		if (tmp.size() <= pos) {
-			tmp.push_back(str);
+		if (deque_map()[id].size() <= pos) {
+			deque_map()[id].push_back(str);
 
 		} else {
-			tmp.insert(tmp.begin()+pos, str);
+			deque_map()[id].insert(deque_map()[id].begin() + pos, str);
 		}
-		deque_map()[id] = tmp;
 		DBG("strdeque_insert_at: element " << str << " inserted");
 	} else {
 		if (id == CONST_DEQUE)
@@ -115,10 +111,8 @@ void strdeque_remove_at(unsigned long id, size_t pos)
 	DBG("strdeque_remove_at(" << ID(id) << ", " << pos << ")");
 	assert(pos >= 0);//TODO zmienic na ignorowanie
 	if (deque_map().count(id) > 0) {
-		strdeq tmp = deque_map()[id];//TODO
-		if (tmp.size() > pos) {
-			tmp.erase(tmp.begin() + pos);
-			deque_map()[id] = tmp;
+		if (deque_map()[id].size() > pos) {
+			deque_map()[id].erase(deque_map()[id].begin() + pos);
 			DBG("strdeque_remove_at: remove at deque of the key " << id << " element in position " << pos);
 		}
 	}
