@@ -13,7 +13,7 @@
 #include <cassert>
 #include "strdequeconst.h"
 
-#define ID(x) (x == CONST_DEQUE ? "the Empty Deque" : x)
+#define ID(x) (x == CONST_DEQUE ? "the Empty Deque" : std::to_string(x).c_str())
 
 typedef std::deque<std::string> strdeq;
 
@@ -29,7 +29,6 @@ unsigned long strdeque_new()
 	strdeq deq;
 	deque_map.emplace(counter++, deq);
 	DBG("strdeque_new: deque " << res << " created");
-	
 	return res;
 }
 
@@ -41,9 +40,13 @@ void strdeque_delete(unsigned long id)
 		DBG("strdeque_delete: deque of the key " << id << "deleted");
 	} else {
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_delete: attempt to remove the Empty Deque");
-		else
+		}
+		else	
+		{
 			DBG("strdeque_delete: deque of the key " << id << "not found");
+		}
 	}
 }
 
@@ -58,9 +61,13 @@ size_t strdeque_size(unsigned long id)
 		DBG("strdeque_size: deque of the key " << id << "has " << res << "elements");
 	} else {
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_size: deque of the key the Empty Deque has 0 elements");
+		}
 		else
+		{
 			DBG("strdeque_size: deque of the key " << id << "does not exist");
+		}
 	}
 	return res;
 }
@@ -83,11 +90,17 @@ void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 		DBG("strdeque_insert_at: element " << str << "inserted");
 	} else {
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_insert_at: attempt to insert into the Empty Deque");
+		}
 		else if (value == NULL)
+		{
 			DBG("strdeque_insert_at: attempt to insert NULL into a deque");
+		}
 		else
+		{
 			DBG("strdeque_insert_at: deque of the key: " << id << "does not exist");
+		}
 	}
 }
 
@@ -106,9 +119,13 @@ void strdeque_remove_at(unsigned long id, size_t pos)
 	else 
 	{
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_remove_at: attempt to remove from the Empty Deque");
+		}
 		else //id nie istnieje
+		{
 			DBG("strdeque_remove_at: deque of the key: " << id << "does not exist");
+		}
 	}
 }
 
@@ -125,9 +142,13 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 	else
 	{
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_get_at: the Empty Deque does not contain an element at " << pos);
+		}
 		else // id nie istnieje
+		{
 			DBG("strdeque_get_at: deque of the key: " << id << "does not exist");
+		}
 	}
 	return NULL;
 }
@@ -142,9 +163,13 @@ void strdeque_clear(unsigned long id)
 	else
 	{
 		if (id == CONST_DEQUE)
+		{
 			DBG("strdeque_clear: attempt to clear the Empty Deque");
+		}
 		else
+		{
 			DBG("strdeque_clear: deque of the key: " << id << "does not exist");
+		}
 	}
 }
 

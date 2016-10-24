@@ -1,3 +1,4 @@
+#include <iostream>
 #include "strdequeconst.h"
 
 #ifdef NDEBUG
