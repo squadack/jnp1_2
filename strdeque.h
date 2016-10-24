@@ -1,3 +1,5 @@
+#ifndef __STRDEQUE_H__
+#define __STRDEQUE_H__
 
 unsigned long strdeque_new();
 
@@ -14,3 +16,5 @@ const char* strdeque_get_at(unsigned long id, size_t pos);
 void strdeque_clear(unsigned long id);
 
 int strdeque_comp(unsigned long id1, unsigned long id2);
+
+#endif
