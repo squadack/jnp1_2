@@ -25,7 +25,7 @@ unsigned long strdeque_new()
 {
 	DBG("strdeque_new");
 	int res = counter;
-	//TODO asercja
+	assert(counter != 0);
 	strdeq deq;
 	deque_map.emplace(counter++, deq);
 	DBG("strdeque_new: deque " << res << " created");
