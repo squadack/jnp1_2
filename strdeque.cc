@@ -17,6 +17,7 @@ namespace {
 
 	typedef std::deque<std::string> strdeq;
 
+	//Zastosowanie funkcji jest konieczne aby uniknąć "initialization order fiasco".
 	std::map<unsigned long, strdeq>& deque_map()
 	{
 		static std::map<unsigned long, strdeq> deque_map;
@@ -46,7 +47,7 @@ void strdeque_delete(unsigned long id)
 	{
 		deque_map().erase(id);
 		if (debug)
-			std::cerr << "strdeque_delete: deque of the key " << id << " deleted" << std::endl;
+			std::cerr << "strdeque_delete: deque " << id << " deleted" << std::endl;
 	}
 	else if (debug)
 	{
@@ -54,9 +55,9 @@ void strdeque_delete(unsigned long id)
 		{
 			std::cerr << "strdeque_delete: attempt to remove the Empty Deque" << std::endl;
 		}
-		else	
+		else
 		{
-			std::cerr << "strdeque_delete: deque of the key " << id << " not found" << std::endl;
+			std::cerr << "strdeque_delete: deque " << id << " not found" << std::endl;
 		}
 	}
 }
@@ -69,17 +70,17 @@ size_t strdeque_size(unsigned long id)
 	if (deque_map().count(id) > 0)
 	{	res = deque_map()[id].size();
 		if (debug)
-			std::cerr << "strdeque_size: deque of the key " << id << "has " << res << " elements" << std::endl;
+			std::cerr << "strdeque_size: deque " << id << " has " << res << " elements" << std::endl;
 	}
 	else if (debug)
 	{
 		if (id == CONST_DEQUE)
 		{
-			std::cerr << "strdeque_size: deque of the key the Empty Deque has 0 elements" << std::endl;
+			std::cerr << "strdeque_size: deque the Empty Deque has 0 elements" << std::endl;
 		}
 		else
 		{
-			std::cerr << "strdeque_size: deque of the key " << id << " does not exist" << std::endl;
+			std::cerr << "strdeque_size: deque " << id << " does not exist" << std::endl;
 		}
 	}
 	return res;
@@ -119,9 +120,9 @@ void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 		{
 			std::cerr << "strdeque_insert_at: attempt to insert NULL into a deque" << std::endl;
 		}
-		else
+		else //id nie istnieje
 		{
-			std::cerr << "strdeque_insert_at: deque of the key: " << id << " does not exist" << std::endl;
+			std::cerr << "strdeque_insert_at: deque: " << id << " does not exist" << std::endl;
 		}
 	}
 }
@@ -136,7 +137,7 @@ void strdeque_remove_at(unsigned long id, size_t pos)
 		{
 			deque_map()[id].erase(deque_map()[id].begin() + pos);
 			if (debug)
-				std::cerr << "strdeque_remove_at: remove at deque of the key " << id << " element in position " << pos << std::endl;
+				std::cerr << "strdeque_remove_at: remove at deque " << id << " element in position " << pos << std::endl;
 		}
 		else if (debug)
 		{
@@ -151,7 +152,7 @@ void strdeque_remove_at(unsigned long id, size_t pos)
 		}
 		else //id nie istnieje
 		{
-			std::cerr << "strdeque_remove_at: deque of the key: " << id << " does not exist" << std::endl;
+			std::cerr << "strdeque_remove_at: deque: " << id << " does not exist" << std::endl;
 		}
 	}
 }
@@ -165,7 +166,7 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 		if (deque_map()[id].size() > pos)
 		{
 			if (debug)
-				std::cerr << "strdeque_get_at: return element from deque of the key " << id << " from position " << pos << std::endl;
+				std::cerr << "strdeque_get_at: return element from deque " << id << " from position " << pos << std::endl;
 			return deque_map()[id].at(pos).c_str();
 		}
 		else if (debug)
@@ -181,7 +182,7 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 		}
 		else // id nie istnieje
 		{
-			std::cerr << "strdeque_get_at: deque of the key: " << id << " does not exist" << std::endl;
+			std::cerr << "strdeque_get_at: deque: " << id << " does not exist" << std::endl;
 		}
 	}
 	return NULL;
@@ -195,7 +196,7 @@ void strdeque_clear(unsigned long id)
 	{
 		deque_map()[id].clear();
 		if (debug)
-			std::cerr << "strdeque_clear: remove all elements from deque of the key " << id << std::endl;
+			std::cerr << "strdeque_clear: remove all elements from deque " << id << std::endl;
 	}
 	else if (debug)
 	{
@@ -205,7 +206,7 @@ void strdeque_clear(unsigned long id)
 		}
 		else //id nie istnieje
 		{
-			std::cerr << "strdeque_clear: deque of the key: " << id << " does not exist" << std::endl;
+			std::cerr << "strdeque_clear: deque: " << id << " does not exist" << std::endl;
 		}
 	}
 }
@@ -226,19 +227,19 @@ int strdeque_comp(unsigned long id1, unsigned long id2)
 	if (tmp1 < tmp2)
 	{
 		if (debug)
-			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " < deque of the key: " << ID(id2) << std::endl;
+			std::cerr << "strdeque_comp: deque: " << ID(id1) << " < deque: " << ID(id2) << std::endl;
 		return -1;
 	}
 	else if (tmp1 == tmp2)
 	{
 		if (debug)
-			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " = deque of the key: " << ID(id2) << std::endl;
+			std::cerr << "strdeque_comp: deque: " << ID(id1) << " = deque: " << ID(id2) << std::endl;
 		return 0;
 	}
 	else //tmp1 > tmp2
 	{
 		if (debug)
-			std::cerr << "strdeque_comp: deque of the key: " << ID(id1) << " > deque of the key: " << ID(id2) << std::endl;
+			std::cerr << "strdeque_comp: deque: " << ID(id1) << " > deque: " << ID(id2) << std::endl;
 		return 1;
 	}
 }
