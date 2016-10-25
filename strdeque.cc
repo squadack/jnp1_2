@@ -91,19 +91,19 @@ void strdeque_insert_at(unsigned long id, size_t pos, const char* value)
 			std::cerr << "\"" << value << "\"";
 		std::cerr << ")" << std::endl;
 	}
-	assert(pos >= 0); //TODO zmienic na ignorowanie
 	
 	if (deque_map().count(id) > 0 && value != NULL) {
 		std::string str(value);
 		if (deque_map()[id].size() <= pos) {
-			deque_map()[id].push_back(str);
-
-		} else {
-			deque_map()[id].insert(deque_map()[id].begin() + pos, str);
+			pos = deque_map()[id].size();
 		}
+		deque_map()[id].insert(deque_map()[id].begin() + pos, str);
+		
 		if (debug)
-			std::cerr << "strdeque_insert_at: element " << str << " inserted" << std::endl;
-	} else if (debug) {
+			std::cerr << "strdeque_insert_at: deque " << id << ", element \"" << str << "\" inserted at " << pos << std::endl;
+	}
+	else if (debug)
+	{
 		if (id == CONST_DEQUE)
 		{
 			std::cerr << "strdeque_insert_at: attempt to insert into the Empty Deque" << std::endl;
@@ -123,12 +123,15 @@ void strdeque_remove_at(unsigned long id, size_t pos)
 {
 	if (debug)
 		std::cerr << "strdeque_remove_at(" << ID(id) << ", " << pos << ")" << std::endl;
-	assert(pos >= 0);//TODO zmienic na ignorowanie
 	if (deque_map().count(id) > 0) {
 		if (deque_map()[id].size() > pos) {
 			deque_map()[id].erase(deque_map()[id].begin() + pos);
 			if (debug)
 				std::cerr << "strdeque_remove_at: remove at deque of the key " << id << " element in position " << pos << std::endl;
+		}
+		else if (debug)
+		{
+			std::cerr << "strdeque_get_at: deque " << id << " does not contain an element at " << pos << std::endl;
 		}
 	}
 	else if (debug)
@@ -148,12 +151,15 @@ const char* strdeque_get_at(unsigned long id, size_t pos)
 {
 	if (debug)
 		std::cerr << "strdeque_get_at(" << ID(id) << ", " << pos << ")" << std::endl;
-	assert(pos >= 0);//TODO zmienic na ignorowanie
 	if (deque_map().count(id) > 0) {
 		if (deque_map()[id].size() > pos) {
 			if (debug)
 				std::cerr << "strdeque_get_at: return element from deque of the key " << id << " from position " << pos << std::endl;
 			return deque_map()[id].at(pos).c_str();
+		}
+		else if (debug)
+		{
+			std::cerr << "strdeque_get_at: deque " << id << " does not contain an element at " << pos << std::endl;
 		}
 	}
 	else if (debug)
@@ -198,9 +204,7 @@ int strdeque_comp(unsigned long id1, unsigned long id2)
 		std::cerr << "strdeque_comp(" << ID(id1) << ", " << ID(id2) << ")" << std::endl;
 	strdeq tmp1;
 	strdeq tmp2;
-	//Jeżeli kolejka dwustronna o którymś z identyfikatorów nie istnieje, to jest
-	//traktowana jako leksykograficznie równa liście pustej. - czy wystarczy porownywac
-	//do pustej kolejki? Kolejka jest lista :/
+
 	if (deque_map().count(id1) > 0) {
 		tmp1 = deque_map()[id1];
 	}
